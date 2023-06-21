@@ -1,6 +1,5 @@
 class Config {
-  static const apiUrl =
-      "https://chatapp-backend-production-a15c.up.railway.app";
+  static const apiUrl = "chatapp-backend-production-a15c.up.railway.app";
   static const String loginUrl = "/api/login";
   static const String signupUrl = "/api/register";
   static const String jobs = "/api/jobs";

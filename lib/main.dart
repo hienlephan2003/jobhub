@@ -1,16 +1,30 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:jobhub/controllers/exports.dart';
+import 'package:jobhub/firebase_options.dart';
+import 'package:jobhub/views/ui/auth/login.dart';
+import 'package:jobhub/views/ui/mainscreen.dart';
 import 'package:jobhub/views/ui/onboarding/onboarding_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'views/common/exports.dart';
 
-
+Widget defaultHome = const OnBoardingScreen();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- 
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final entrypoint = prefs.getBool('entrypoint') ?? false;
+  final loggedIn = prefs.getBool('loggedIn') ?? false;
+  if (entrypoint && !loggedIn) {
+    defaultHome = LoginPage();
+  } else if (entrypoint && loggedIn) {
+    defaultHome = MainScreen();
+  }
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => OnBoardNotifier()),
     ChangeNotifierProvider(create: (context) => LoginNotifier()),
@@ -30,7 +44,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return ScreenUtilInit(
         useInheritedMediaQuery: true,
         designSize: const Size(375, 812),
@@ -45,7 +58,7 @@ class MyApp extends StatelessWidget {
               iconTheme: IconThemeData(color: Color(kDark.value)),
               primarySwatch: Colors.grey,
             ),
-            home: const OnBoardingScreen(),
+            home: defaultHome,
           );
         });
   }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as https;
 import 'package:jobhub/models/request/auth/login_model.dart';
+import 'package:jobhub/models/request/auth/profile_update_model.dart';
 import 'package:jobhub/models/response/auth/login_res_model.dart';
 import 'package:jobhub/services/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,24 @@ class AuthHelper {
       await prefs.setString('userId', userId);
       await prefs.setString('profile', profile);
       await prefs.setBool('loggedIn', true);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> updateProfile(
+      ProfileUpdateReq model, String userId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    Map<String, String> requestHeaders = {
+      'Content-Type': "application/json",
+      'token': "Bearer $token"
+    };
+    var url = Uri.https(Config.apiUrl, "${Config.profileUrl}/$userId");
+    var response = await client.post(url,
+        headers: requestHeaders, body: jsonEncode(model));
+    if (response.statusCode == 200) {
       return true;
     } else {
       return false;
