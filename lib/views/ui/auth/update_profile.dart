@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:jobhub/constants/app_constants.dart';
 import 'package:jobhub/controllers/exports.dart';
 import 'package:jobhub/models/request/auth/profile_update_model.dart';
+import 'package:jobhub/views/common/app_bar.dart';
 import 'package:jobhub/views/common/app_style.dart';
 import 'package:jobhub/views/common/custom_btn.dart';
 import 'package:jobhub/views/common/custom_textfield.dart';
@@ -14,21 +17,20 @@ import 'package:jobhub/views/common/height_spacer.dart';
 import 'package:jobhub/views/common/reusable_text.dart';
 import 'package:provider/provider.dart';
 
-class PersonalDetails extends StatefulWidget {
-  const PersonalDetails({super.key});
-
+class ProfileUpdate extends StatefulWidget {
+  const ProfileUpdate({super.key});
   @override
-  State<PersonalDetails> createState() => _PersonalDetailsState();
+  State<ProfileUpdate> createState() => _ProfileUpdateState();
 }
 
-class _PersonalDetailsState extends State<PersonalDetails> {
+class _ProfileUpdateState extends State<ProfileUpdate> {
   final TextEditingController phone = TextEditingController();
   TextEditingController location = TextEditingController();
-  TextEditingController skill0 = TextEditingController();
-  TextEditingController skill1 = TextEditingController();
-  TextEditingController skill2 = TextEditingController();
-  TextEditingController skill3 = TextEditingController();
-  TextEditingController skill4 = TextEditingController();
+  TextEditingController skill0 = TextEditingController(text: profile[0]);
+  TextEditingController skill1 = TextEditingController(text: profile[1]);
+  TextEditingController skill2 = TextEditingController(text: profile[2] ?? "");
+  TextEditingController skill3 = TextEditingController(text: profile[3]);
+  TextEditingController skill4 = TextEditingController(text: profile[4]);
 
   @override
   void dispose() {
@@ -45,10 +47,22 @@ class _PersonalDetailsState extends State<PersonalDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomAppBar(
+          text: "Update Profile",
+          child: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: Icon(CupertinoIcons.arrow_left),
+          ),
+        ),
+      ),
       body: Consumer<LoginNotifier>(
         builder: (context, loginNotifier, child) {
           return ListView(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 60.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

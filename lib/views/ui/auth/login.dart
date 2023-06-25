@@ -90,13 +90,13 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: "Password",
                     obscureText: loginNotifier.obscureText,
                     keyboardType: TextInputType.text,
-                    validator: (password) {
-                      if (password!.isEmpty || password.length < 7) {
-                        return "Please enter a valid password";
-                      } else {
-                        return null;
-                      }
-                    },
+                    // validator: (password) {
+                    //   if (password!.isEmpty || password.length < 7) {
+                    //     return "Please enter a valid password";
+                    //   } else {
+                    //     return null;
+                    //   }
+                    // },
                     suffixIcon: GestureDetector(
                       onTap: () {
                         loginNotifier.obscureText = !loginNotifier.obscureText;
@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                         onTap: () {
-                          Get.to(() => const RegistrationPage());
+                          Get.off(() => const RegistrationPage());
                         },
                         child: ReusableText(
                             text: "Register",

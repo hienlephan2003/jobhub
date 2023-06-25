@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:jobhub/controllers/exports.dart';
+import 'package:jobhub/models/request/auth/signup_model.dart';
 import 'package:jobhub/views/ui/auth/login.dart';
 import 'package:provider/provider.dart';
 
@@ -54,84 +57,96 @@ class _RegistrationPageState extends State<RegistrationPage> {
           ),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                HeightSpacer(size: 50),
-                ReusableText(
-                    text: "Welcome back",
-                    style: appstyle(30, Color(kDark.value), FontWeight.w600)),
-                ReusableText(
-                    text: "Fill the details to sign up for an account",
-                    style: appstyle(16, Color(kDark.value), FontWeight.normal)),
-                HeightSpacer(size: 50.h),
-                CustomTextField(
-                    controller: name,
-                    hintText: "Name",
+            child: Form(
+              key: loginNotifier.signupFormKey,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  HeightSpacer(size: 50),
+                  ReusableText(
+                      text: "Welcome back",
+                      style: appstyle(30, Color(kDark.value), FontWeight.w600)),
+                  ReusableText(
+                      text: "Fill the details to sign up for an account",
+                      style:
+                          appstyle(16, Color(kDark.value), FontWeight.normal)),
+                  HeightSpacer(size: 50.h),
+                  CustomTextField(
+                      controller: name,
+                      hintText: "Name",
+                      keyboardType: TextInputType.text,
+                      validator: (email) {
+                        if (email!.isEmpty) {
+                          return "Please enter a valid name";
+                        } else {
+                          return null;
+                        }
+                      }),
+                  const HeightSpacer(size: 20),
+                  CustomTextField(
+                      controller: email,
+                      hintText: "Email",
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (email) {
+                        if (email!.isEmpty || !email.contains("@")) {
+                          return "Please enter a valid email";
+                        } else {
+                          return null;
+                        }
+                      }),
+                  const HeightSpacer(size: 20),
+                  CustomTextField(
+                    controller: password,
+                    hintText: "Password",
+                    obscureText: signUpNotifier.isObsecure,
                     keyboardType: TextInputType.text,
-                    validator: (email) {
-                      if (email!.isEmpty) {
-                        return "Please enter a valid name";
+                    validator: (password) {
+                      if (password!.isEmpty ||
+                          signUpNotifier.passwordValidator(password)) {
+                        return "Please enter a valid password at least one upperkey, one lowerkey, one digit, a special character and length of 8 characters";
                       } else {
                         return null;
                       }
-                    }),
-                const HeightSpacer(size: 20),
-                CustomTextField(
-                    controller: email,
-                    hintText: "Email",
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (email) {
-                      if (email!.isEmpty || !email.contains("@")) {
-                        return "Please enter a valid email";
-                      } else {
-                        return null;
-                      }
-                    }),
-                const HeightSpacer(size: 20),
-                CustomTextField(
-                  controller: password,
-                  hintText: "Password",
-                  obscureText: signUpNotifier.isObsecure,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (password) {
-                    if (signUpNotifier.passwordValidator(password ?? '')) {
-                      return "Please enter a valid password at least one upperkey, one lowerkey, one digit, a special character and length of 8 characters";
-                    } else {
-                      return null;
-                    }
-                  },
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      signUpNotifier.isObsecure = !signUpNotifier.isObsecure;
                     },
-                    child: Icon(
-                      signUpNotifier.isObsecure
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Color(kDark.value),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        signUpNotifier.isObsecure = !signUpNotifier.isObsecure;
+                      },
+                      child: Icon(
+                        signUpNotifier.isObsecure
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Color(kDark.value),
+                      ),
                     ),
                   ),
-                ),
-                const HeightSpacer(size: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
+                  const HeightSpacer(size: 10),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                        onTap: () {
+                          Get.off(() => const LoginPage());
+                        },
+                        child: ReusableText(
+                            text: "Login",
+                            style: appstyle(
+                                14, Color(kDark.value), FontWeight.w500))),
+                  ),
+                  const HeightSpacer(size: 50),
+                  CustomButton(
                       onTap: () {
-                        Get.to(() => const LoginPage());
+                        if (loginNotifier.validateSignUpAndSave()) {
+                          loginNotifier.firstTime = !loginNotifier.firstTime;
+                          SignupModel model = SignupModel(
+                              username: name.text,
+                              email: email.text,
+                              password: password.text);
+                          loginNotifier.userSignUp(model);
+                        }
                       },
-                      child: ReusableText(
-                          text: "Login",
-                          style: appstyle(
-                              14, Color(kDark.value), FontWeight.w500))),
-                ),
-                const HeightSpacer(size: 50),
-                CustomButton(
-                    onTap: () {
-                      loginNotifier.firstTime = !loginNotifier.firstTime;
-                    },
-                    text: "Sign up"),
-              ],
+                      text: "Sign up"),
+                ],
+              ),
             ),
           ));
     });

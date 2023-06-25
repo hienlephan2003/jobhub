@@ -70,8 +70,10 @@ class ImageUpoader extends ChangeNotifier {
   // }
   Future<String?> imageUpload(XFile upload) async {
     File image = File(upload.path);
-    final ref =
-        FirebaseStorage.instance.ref().child('jobhub').child('${uuid.v1()}jpg');
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('jobhub')
+        .child('${uuid.v1()}.jpg');
     await ref.putFile(image);
     imageFil = await ref.getDownloadURL();
 
