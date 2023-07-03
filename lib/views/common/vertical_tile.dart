@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:jobhub/constants/app_constants.dart';
+import 'package:jobhub/models/response/jobs/jobs_response.dart';
 import 'package:jobhub/views/common/app_style.dart';
 import 'package:jobhub/views/common/reusable_text.dart';
 import 'package:jobhub/views/common/width_spacer.dart';
 
 class VerticalTile extends StatelessWidget {
-  const VerticalTile({super.key, this.onTap});
+  const VerticalTile({super.key, this.onTap, required this.job});
   final void Function()? onTap;
+  final JobsResponse job;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -30,8 +33,7 @@ class VerticalTile extends StatelessWidget {
                     CircleAvatar(
                       backgroundColor: Color(kLightGrey.value),
                       radius: 30,
-                      backgroundImage:
-                          const AssetImage("assets/images/user.png"),
+                      backgroundImage: NetworkImage(job.imageUrl),
                     ),
                     const WidthSpacer(width: 10),
                     Column(
@@ -39,17 +41,39 @@ class VerticalTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ReusableText(
-                            text: "DBestech",
+                            text: job.company,
                             style: appstyle(
                                 20, Color(kDark.value), FontWeight.w600)),
                         SizedBox(
                           width: width * 0.5,
                           child: ReusableText(
-                              text: "Django Developer",
+                              text: job.title,
                               style: appstyle(
                                   20, Color(kDarkGrey.value), FontWeight.w600)),
                         ),
                       ],
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        ReusableText(
+                            text: job.salary,
+                            style: appstyle(
+                                20, Color(kDark.value), FontWeight.w600)),
+                        ReusableText(
+                            text: "/${job.period}",
+                            style: appstyle(
+                                23, Color(kDark.value), FontWeight.w600)),
+                      ],
+                    ),
+                    CircleAvatar(
+                      radius: 18,
+                      backgroundColor: Color(kLight.value),
+                      child: const Icon(Ionicons.chevron_forward),
                     )
                   ],
                 ),

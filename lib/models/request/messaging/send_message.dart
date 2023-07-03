@@ -1,21 +1,22 @@
 import 'dart:convert';
 
-GetChats getChatsFromJson(String str) => GetChats.fromJson(json.decode(str));
+SendMessage sendMessageFromJson(String str) =>
+    SendMessage.fromJson(json.decode(str));
 
-String getChatsToJson(GetChats data) => json.encode(data.toJson());
+String sendMessageToJson(SendMessage data) => json.encode(data.toJson());
 
-class GetChats {
+class SendMessage {
   final String chatId;
   final String content;
   final String reciever;
 
-  GetChats({
+  SendMessage({
     required this.chatId,
     required this.content,
     required this.reciever,
   });
 
-  factory GetChats.fromJson(Map<String, dynamic> json) => GetChats(
+  factory SendMessage.fromJson(Map<String, dynamic> json) => SendMessage(
         chatId: json["chatId"],
         content: json["content"],
         reciever: json["reciever"],

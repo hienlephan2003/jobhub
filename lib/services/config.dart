@@ -8,4 +8,6 @@ class Config {
   static const String profileUrl = "/api/users";
   static const String bookmarkUrl = "/api/bookmarks";
   static const String createOrder = "/api/pays/createOrder";
+  static const String chatUrl = "/api/chats";
+  static const String messageUrl = "/api/messages";
 }

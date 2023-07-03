@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:jobhub/controllers/chats_provider.dart';
 import 'package:jobhub/controllers/exports.dart';
 import 'package:jobhub/firebase_options.dart';
 import 'package:jobhub/views/ui/auth/login.dart';
@@ -34,6 +35,7 @@ void main() async {
     ChangeNotifierProvider(create: (context) => BookMarkNotifier()),
     ChangeNotifierProvider(create: (context) => ImageUpoader()),
     ChangeNotifierProvider(create: (context) => ProfileNotifier()),
+    ChangeNotifierProvider(create: (context) => ChatNotifier()),
   ], child: const MyApp()));
 }
 

@@ -8,6 +8,7 @@ import 'package:jobhub/views/common/reusable_text.dart';
 import 'package:jobhub/views/common/width_spacer.dart';
 import 'package:jobhub/views/ui/auth/profile.dart';
 import 'package:jobhub/views/ui/bookmarks/bookmarks.dart';
+import 'package:jobhub/views/ui/chat/chat_list.dart';
 import 'package:jobhub/views/ui/chat/chatpage.dart';
 import 'package:jobhub/views/ui/device_mgt/devices_info.dart';
 import 'package:jobhub/views/ui/homepage.dart';
@@ -45,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
       case 0:
         return const HomePage();
       case 1:
-        return const ChatsPage();
+        return const ChatList();
       case 2:
         return const BookMarkPage();
       case 3:
